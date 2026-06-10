@@ -4,7 +4,6 @@ from pydantic import BaseModel
 class PatientDTO(BaseModel):
     NOME: str
     CPF: int
-    IDADE: int
 
 class ExamDataDTO(BaseModel):
     AGRAVTABAC: Literal[
@@ -118,6 +117,7 @@ class ExamDataDTO(BaseModel):
         "RS", "RO", "RR", "SC", "SP",
         "SE", "TO"
     ]
+    IDADE: int
     
 class PatientExamPayload(BaseModel):
     PACIENTE: PatientDTO

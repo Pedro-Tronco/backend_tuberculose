@@ -9,7 +9,7 @@ def create_app() -> Flask:
     
     register_error_handlers(app)
     
-    app.register_blueprint(create_patient_blueprint(), url_prefix='/api')
+    app.register_blueprint(create_patient_blueprint(), url_prefix='/api/exam')
     
     return app
 

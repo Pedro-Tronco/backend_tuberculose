@@ -10,13 +10,13 @@ def create_patient_blueprint() -> Blueprint:
     patient_repo = PatientRepository()
     patient_service = PatientService(patient_repo)
 
-    @patient_bp.route('/exam', methods=['POST'])
+    @patient_bp.route('/predict', methods=['GET'])
     def create_exam():
         data = request.json or {}
         created_exam = patient_service.save_exam_data(data)
-        return jsonify(created_exam), 201
+        return jsonify(created_exam), 200
         
-    @patient_bp.route('/exam', methods=['GET'])
+    @patient_bp.route('/results', methods=['GET'])
     def get_exam_data():
         data = request.json or {}
         exam_data = patient_service.get_exam_data(data)

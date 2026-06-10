@@ -21,4 +21,4 @@ This repository contains a Flask-based backend for recording and retrieving pati
 
 ### API contract
 
-See `ENDPOINTS.md` for full endpoint details, example requests, response structure, and error behavior.
+See [`ENDPOINTS.md`](./ENDPOINTS.md) for full endpoint details, example requests, response structure, and error behavior.

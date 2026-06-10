@@ -8,13 +8,13 @@ class PatientRepository:
         self._db = {} # USING SIMPLE DICT AS STORAGE FOR NOW
         self._counter = 1
         
-    def save_exam_data(self, patient: PatientDTO, results: ExamDataDTO) -> dict[str, Any]:
+    def save_exam_data(self, patient: PatientDTO, results: ExamDataDTO) -> ExamDataDTO:
         key = str(tuple(patient.model_dump().values()))
         values = results.model_dump()
         
         self._db[key] = values
         
-        return { key: values }
+        return ExamDataDTO.model_validate(values)
         
     def get_exam_data_by_patient_data(self, patient: PatientDTO) -> dict[str, Any]:
         key = str(tuple(patient.model_dump().values()))
@@ -23,6 +23,6 @@ class PatientRepository:
         if data is None:
             raise ResourceNotFoundError(f'No resource found for key {key}')
         
-        return {'DADOS': data}
+        return data
 
         
