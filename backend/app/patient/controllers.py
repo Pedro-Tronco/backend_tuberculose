@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from .repositories import PatientRepository
 from .services import PatientService
 
-def create_patient_blueprint():
+def create_patient_blueprint() -> Blueprint:
 
     patient_bp = Blueprint('patient_blueprint', __name__)
 

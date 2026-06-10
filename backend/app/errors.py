@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest
 from .logger import logger
 from .exceptions import DatabaseError, InternalServerError, ResourceNotFoundError
 
-def register_error_handlers(app: Flask):
+def register_error_handlers(app: Flask) -> None:
 
     @app.errorhandler(InternalServerError)
     def handle_internal_server_error(e):
