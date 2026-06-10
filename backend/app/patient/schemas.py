@@ -117,7 +117,7 @@ class ExamDataDTO(BaseModel):
         "RS", "RO", "RR", "SC", "SP",
         "SE", "TO"
     ]
-    IDADE: int
+    IDADE_ANOS: int
     
 class PatientExamPayload(BaseModel):
     PACIENTE: PatientDTO

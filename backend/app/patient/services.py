@@ -27,7 +27,7 @@ class PatientService:
         val_data = ExamDataDTO.model_validate(data) 
         
         reg_data = {
-            key: (unidecode(value).lower() if isinstance(value, str) else value)
+            key: (unidecode(value).lower().replace(' ', '_') if isinstance(value, str) else value)
             for key, value in val_data
         }
         

@@ -16,7 +16,7 @@ def create_patient_blueprint() -> Blueprint:
         created_exam = patient_service.save_exam_data(data)
         return jsonify(created_exam), 200
         
-    @patient_bp.route('/results', methods=['GET'])
+    @patient_bp.route('/history', methods=['GET'])
     def get_exam_data():
         data = request.json or {}
         exam_data = patient_service.get_exam_data(data)
