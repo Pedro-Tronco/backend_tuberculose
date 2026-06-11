@@ -101,8 +101,7 @@ Retrieve exam data for an existing patient.
 ```json
 {
   "NOME": "João Silva",
-  "CPF": 12345678901,
-  "IDADE": 35
+  "CPF": 12345678901
 }
 ```
 
@@ -135,7 +134,8 @@ Retrieve exam data for an existing patient.
     "HISTOPATOL": "Não realizado",
     "TRATSUP_AT": "Não",
     "CS_ESCOL_N": "Ensino médio completo",
-    "SG_UF_NOT": "SP"
+    "SG_UF_NOT": "SP",
+    "IDADE_ANOS": 35
   }
 }
 ```
