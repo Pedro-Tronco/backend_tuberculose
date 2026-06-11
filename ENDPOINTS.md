@@ -1,25 +1,43 @@
 # API Endpoints
 
-This backend exposes a simple exam API under the `/api/exam` path.
+This backend exposes endpoints for health checks and patient exam management.
 
 ## Base URL
 
 - `http://127.0.0.1:7000/api`
 
-## POST /api/exam
+## GET /api/health-check
 
-Create a new exam record for a patient.
+Check the API server liveness and health status.
 
 ### Request
 
-- Method: `POST`
-- URL: `/api/exam`
+- Method: `GET`
+- URL: `/api/health-check`
+
+### Response
+
+- Status: `200 OK`
+- Body: JSON object with health status information
+
+### Notes
+
+- No request body required.
+- Use this endpoint to verify the server is running and responsive.
+
+## GET /api/exam/predict
+
+Save a new exam record for a patient (prediction endpoint).
+
+### Request
+
+- Method: `GET`
+- URL: `/api/exam/predict`
 - Content-Type: `application/json`
 - Body schema:
   - `PACIENTE`: object with patient information
     - `NOME`: string
     - `CPF`: integer
-    - `IDADE`: integer
   - `DADOS`: object with exam attributes and clinical fields
 
 ### Example request body
@@ -29,7 +47,6 @@ Create a new exam record for a patient.
   "PACIENTE": {
     "NOME": "João Silva",
     "CPF": 12345678901,
-    "IDADE": 35
   },
   "DADOS": {
     "AGRAVTABAC": "Não",
@@ -50,14 +67,15 @@ Create a new exam record for a patient.
     "HISTOPATOL": "Não realizado",
     "TRATSUP_AT": "Não",
     "CS_ESCOL_N": "Ensino médio completo",
-    "SG_UF_NOT": "SP"
+    "SG_UF_NOT": "SP",
+    "IDADE_ANOS": 35
   }
 }
 ```
 
 ### Response
 
-- Status: `201 Created`
+- Status: `200 OK`
 - Body: JSON object containing the stored exam data keyed by the patient tuple.
 
 ### Notes
@@ -65,19 +83,18 @@ Create a new exam record for a patient.
 - The request payload is validated using the current schema definitions.
 - All fields under `DADOS` are required and must match one of the accepted literal values.
 
-## GET /api/exam
+## GET /api/exam/history
 
 Retrieve exam data for an existing patient.
 
 ### Request
 
 - Method: `GET`
-- URL: `/api/exam`
+- URL: `/api/exam/history`
 - Content-Type: `application/json`
 - Body schema:
   - `NOME`: string
   - `CPF`: integer
-  - `IDADE`: integer
 
 ### Example request body
 

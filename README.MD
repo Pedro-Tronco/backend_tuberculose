@@ -6,18 +6,43 @@ This repository contains a Flask-based backend for recording and retrieving pati
 
 ### Run the backend server
 
-1. Open a terminal in the project root:
+1. Clone the repository and navigate to the backend directory:
    ```powershell
-   cd c:\Users\Pedro Augusto\Documents\Atitus\projetos\5o_semestre\projeto_tuberculose\backend
+   git clone https://github.com/Pedro-Tronco/backend_tuberculose
+   cd projeto_tuberculose/backend
    ```
-2. Start the server using Python:
+
+2. (Optional) Set up a Python virtual environment:
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+
+3. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+4. Start the server:
    ```powershell
    python run.py
    ```
-3. The backend runs on:
+
+5. The backend will be available at:
    ```text
    http://127.0.0.1:7000
    ```
+   or
+   ```text
+   http://localhost:7000
+   ```
+
+
+### Available endpoints
+
+- `GET /api/health-check` — verify server liveness
+- `GET /api/exam/predict` — save a new exam record
+- `GET /api/exam/history` — retrieve exam data for a patient
 
 ### API contract
 
