@@ -6,6 +6,10 @@ This backend exposes endpoints for health checks and patient exam management.
 
 - `http://127.0.0.1:7000/api`
 
+  AKA:
+
+- `http://localhost:7000/api`
+
 ## GET /api/health-check
 
 Check the API server liveness and health status.

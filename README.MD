@@ -29,13 +29,13 @@ This repository contains a Flask-based backend for recording and retrieving pati
    ```
 
 5. The backend will be available at:
-   ```text
-   http://127.0.0.1:7000
-   ```
-   or
-   ```text
-   http://localhost:7000
-   ```
+   
+   `http://127.0.0.1:7000`
+   
+   AKA
+   
+   `http://localhost:7000`
+   
 
 
 ### Available endpoints
