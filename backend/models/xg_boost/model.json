@@ -1,0 +1,4 @@
+{
+  "name": "XGBoost",
+  "description": "A gradient boosting tree model with strong performance on tabular data. Typically more accurate but less interpretable."
+}

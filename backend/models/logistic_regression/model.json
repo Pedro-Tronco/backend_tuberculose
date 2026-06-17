@@ -1,0 +1,4 @@
+{
+  "name": "Logistic Regression",
+  "description": "A simple binary classification model using logistic regression. Good for small datasets and interpretable results."
+}

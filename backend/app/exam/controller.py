@@ -4,7 +4,7 @@ from .services import ExamService
 
 def create_exam_blueprint(exam_service: ExamService) -> Blueprint:
 
-    exam_bp = Blueprint('model_blueprint', __name__)
+    exam_bp = Blueprint('exam_blueprint', __name__)
 
     @exam_bp.route('/predict', methods=['GET'])
     def create_exam():
