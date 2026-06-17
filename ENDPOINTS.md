@@ -1,56 +1,87 @@
 # API Endpoints
 
-This backend exposes endpoints for health checks and patient exam management.
+This backend exposes endpoints for patient management, exam predictions, health checks, and model management.
 
 ## Base URL
 
 - `http://127.0.0.1:7000/api`
-
-  AKA:
-
 - `http://localhost:7000/api`
 
-## GET /api/health-check
+---
+
+## Health Check
+
+### GET /api/health-check
 
 Check the API server liveness and health status.
 
-### Request
-
+**Request:**
 - Method: `GET`
 - URL: `/api/health-check`
+- Body: None
 
-### Response
-
+**Response:**
 - Status: `200 OK`
 - Body: JSON object with health status information
 
-### Notes
-
+**Notes:**
 - No request body required.
 - Use this endpoint to verify the server is running and responsive.
 
-## GET /api/exam/predict
+---
 
-Save a new exam record for a patient (prediction endpoint).
+## Patient Management
 
-### Request
+### POST /api/patient/create
 
+Create a new patient record.
+
+**Request:**
+- Method: `POST`
+- URL: `/api/patient/create`
+- Content-Type: `application/json`
+- Body: Patient information object
+
+**Response:**
+- Status: `201 Created`
+- Body: JSON object with created patient data
+
+### GET /api/patient/all
+
+Retrieve all registered patients.
+
+**Request:**
 - Method: `GET`
+- URL: `/api/patient/all`
+- Body: None
+
+**Response:**
+- Status: `200 OK`
+- Body: JSON array containing all patient records
+
+---
+
+## Exam Management
+
+### POST /api/exam/predict
+
+Generate a prediction for an exam using clinical data.
+
+**Request:**
+- Method: `POST`
 - URL: `/api/exam/predict`
 - Content-Type: `application/json`
 - Body schema:
   - `PACIENTE`: object with patient information
-    - `NOME`: string
-    - `CPF`: integer
   - `DADOS`: object with exam attributes and clinical fields
 
-### Example request body
+**Example request body:**
 
 ```json
 {
   "PACIENTE": {
     "NOME": "João Silva",
-    "CPF": 12345678901,
+    "CPF": 12345678901
   },
   "DADOS": {
     "AGRAVTABAC": "Não",
@@ -77,22 +108,19 @@ Save a new exam record for a patient (prediction endpoint).
 }
 ```
 
-### Response
-
+**Response:**
 - Status: `200 OK`
-- Body: JSON object containing the stored exam data keyed by the patient tuple.
+- Body: JSON object with prediction results
 
-### Notes
+**Notes:**
+- All fields under `DADOS` are required and must match accepted literal values.
+- The request payload is validated using Pydantic schemas.
 
-- The request payload is validated using the current schema definitions.
-- All fields under `DADOS` are required and must match one of the accepted literal values.
+### GET /api/exam/history
 
-## GET /api/exam/history
+Retrieve exam history for a patient.
 
-Retrieve exam data for an existing patient.
-
-### Request
-
+**Request:**
 - Method: `GET`
 - URL: `/api/exam/history`
 - Content-Type: `application/json`
@@ -100,7 +128,7 @@ Retrieve exam data for an existing patient.
   - `NOME`: string
   - `CPF`: integer
 
-### Example request body
+**Example request body:**
 
 ```json
 {
@@ -109,54 +137,50 @@ Retrieve exam data for an existing patient.
 }
 ```
 
-### Response
-
+**Response:**
 - Status: `200 OK`
-- Body:
-  - `DADOS`: object with exam attributes stored for the patient
+- Body: JSON object containing exam history for the patient
 
-### Example response body
+**Notes:**
+- If the patient does not exist, returns `404 Not Found`.
 
-```json
-{
-  "DADOS": {
-    "AGRAVTABAC": "Não",
-    "AGRAVDROGA": "Não",
-    "AGRAVAIDS": "Ignorado",
-    "AGRAVDIABE": "Ignorado",
-    "HIV": "Negativo",
-    "POP_RUA": "Não",
-    "POP_LIBER": "Não",
-    "POP_IMIG": "Não",
-    "CS_SEXO": "Masculino",
-    "BACILOSC_E": "Negativo",
-    "CULTURA_ES": "Não realizada",
-    "RAIOX_TORA": "Normal",
-    "CS_RACA": "Parda",
-    "TRATAMENTO": "Caso novo",
-    "CULTURA_OU": "Não realizada",
-    "HISTOPATOL": "Não realizado",
-    "TRATSUP_AT": "Não",
-    "CS_ESCOL_N": "Ensino médio completo",
-    "SG_UF_NOT": "SP",
-    "IDADE_ANOS": 35
-  }
-}
-```
+### GET /api/exam/results
 
-### Notes
+Retrieve exam results for a patient.
 
-- This endpoint currently expects the patient identifiers in the JSON request body, not as query parameters.
-- If the stored patient does not exist, the API returns a `404 Not Found` error.
+**Request:**
+- Method: `GET`
+- URL: `/api/exam/results`
+- Content-Type: `application/json`
+- Body schema:
+  - `NOME`: string
+  - `CPF`: integer
+
+**Response:**
+- Status: `200 OK`
+- Body: JSON object containing exam results
+
+---
+
+## Model Management
+
+### GET /api/model/list
+
+List all available ML models.
+
+**Request:**
+- Method: `GET`
+- URL: `/api/model/list`
+- Body: None
+
+**Response:**
+- Status: `200 OK`
+- Body: JSON array with available models
+
+---
 
 ## Error responses
 
 - `400 Bad Request` — invalid JSON, missing required fields, or schema validation failure
-- `404 Not Found` — patient record does not exist
-- `500 Internal Server Error` — unexpected server error or storage issue
-
-## Storage behavior
-
-- The backend uses a simple in-memory dictionary to store exam results.
-- Data is not persisted across server restarts.
-- This is intended as a demo implementation for the current backend.
+- `404 Not Found` — resource not found
+- `500 Internal Server Error` — unexpected server error
