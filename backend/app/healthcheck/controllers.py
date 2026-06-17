@@ -1,14 +1,10 @@
 from flask import Blueprint, request, jsonify
 
-from .repositories import DBHealthRepository
 from .services import HealthcheckService
 
-def create_heatlcheck_blueprint() -> Blueprint:
+def create_heatlcheck_blueprint(health_service: HealthcheckService) -> Blueprint:
     
     health_bp = Blueprint('healthcheck_blueprint', __name__)
-    
-    health_repo = DBHealthRepository()
-    health_service = HealthcheckService(health_repo)
     
     @health_bp.route('', methods=['GET'])
     def check_health():

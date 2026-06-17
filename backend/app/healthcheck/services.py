@@ -1,7 +1,7 @@
-from .repositories import DBHealthRepository
+from .repositories import HealthCheckRepository
 
 class HealthcheckService:
-    def __init__(self, healt_repo: DBHealthRepository) -> None:
+    def __init__(self, healt_repo: HealthCheckRepository) -> None:
         self.health_repo = healt_repo
         
     def check_api_liveliness(self) -> dict:

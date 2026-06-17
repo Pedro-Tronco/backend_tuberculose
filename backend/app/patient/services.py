@@ -2,34 +2,33 @@ from typing import Any
 from unidecode import unidecode 
 
 from .repositories import PatientRepository
-from .schemas import PatientExamPayload, PatientDTO, ExamDataDTO
+from .schemas import PatientDTO
+
+from ..exceptions import ResourceNotFoundError
 
 class PatientService:
     def __init__(self, patient_repo: PatientRepository) -> None:
         self.patient_repo = patient_repo
+       
+    def create_patient(self, patient_payload: dict[str, Any] | PatientDTO):
+        val_patient = PatientDTO.model_validate(patient_payload)
         
-    def save_exam_data(self, payload: dict[Any, Any]) -> dict[str, Any]:
-        validated_pl = PatientExamPayload.model_validate(payload)
+        # Verify if user already exists before saving
+        patient = next(
+            (value for value in self.patient_repo.get_all_values() if value["CPF"] == val_patient.CPF),
+            None
+        )
         
-        patient_data = PatientDTO.model_validate(validated_pl.PACIENTE)
-        exam_data = ExamDataDTO.model_validate(validated_pl.DADOS)
+        if patient is None:
+            patient = self.patient_repo.create_user(val_patient)
         
-        self.patient_repo.save_exam_data(patient_data, exam_data)
-        
-        return self.regularize_exam_data(exam_data)
+        return dict(patient)
     
-    def get_exam_data(self, payload: dict[Any, Any]) -> dict[str, Any]:
-        patient_data = PatientDTO.model_validate(payload)
+    def get_all_patients(self):
+        patients = self.patient_repo.get_all_values()
         
-        return self.patient_repo.get_exam_data_by_patient_data(patient_data)
-        
-    def regularize_exam_data(self, data: ExamDataDTO) -> dict[str, Any]:
-        val_data = ExamDataDTO.model_validate(data) 
-        
-        reg_data = {
-            key: (unidecode(value).lower().replace(' ', '_') if isinstance(value, str) else value)
-            for key, value in val_data
-        }
-        
-        return reg_data
+        if patients is None or len(patients) == 0:
+            raise ResourceNotFoundError("Nenhum paciente cadastrado")
+
+        return patients
         

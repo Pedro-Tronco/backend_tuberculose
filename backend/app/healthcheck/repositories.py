@@ -1,4 +1,4 @@
-class DBHealthRepository:
+class HealthCheckRepository:
     
     def __init__(self) -> None:
         pass

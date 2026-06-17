@@ -18,7 +18,7 @@ def register_error_handlers(app: Flask) -> None:
     
     @app.errorhandler(ResourceNotFoundError)
     def handle_resource_not_found(e):
-        return jsonify({'error': e}), 404
+        return jsonify({'error': str(e)}), 404
     
     @app.errorhandler(ValidationError)
     def handle_validation_error(e):
