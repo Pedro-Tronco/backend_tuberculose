@@ -1,7 +1,8 @@
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import BaseModel
 
 from ..patient.schemas import PatientDTO
+
 
 class ExamDataDTO(BaseModel):
     AGRAVTABAC: Literal[
@@ -120,3 +121,4 @@ class ExamDataDTO(BaseModel):
 class PatientExamPayload(BaseModel):
     PACIENTE: PatientDTO
     DADOS: ExamDataDTO
+    MODELO: str

@@ -6,7 +6,7 @@ def create_exam_blueprint(exam_service: ExamService) -> Blueprint:
 
     exam_bp = Blueprint('exam_blueprint', __name__)
 
-    @exam_bp.route('/predict', methods=['GET'])
+    @exam_bp.route('/predict', methods=['POST'])
     def create_exam():
         data = request.json or {}
         created_exam = exam_service.generate_results(data)

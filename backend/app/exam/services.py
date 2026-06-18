@@ -20,11 +20,12 @@ class ExamService:
         payload = PatientExamPayload.model_validate(data)
         patient = payload.PACIENTE
         exam_data = payload.DADOS
+        model_id = payload.MODELO
         
         self.patient_service.create_patient(patient)
         self.exam_repo.save_exam_data(patient, exam_data)
-        
-        exam_results = self.model_service.predict(exam_data)
+
+        exam_results = self.model_service.predict_with_model(model_id, exam_data)
         
         self.exam_repo.save_exam_results(patient, exam_results)
         
