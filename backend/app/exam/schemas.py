@@ -8,28 +8,33 @@ class ExamDataDTO(BaseModel):
     AGRAVTABAC: Literal[
         "Ignorado",
         "Não",
-        "Sim"
+        "Sim",
+        None
     ]
     AGRAVDROGA: Literal[
         "Ignorado",
         "Não",
-        "Sim"
+        "Sim",
+        None
     ]
     AGRAVAIDS: Literal[
         "Ignorado",
         "Não",
-        "Sim"
+        "Sim",
+        None
     ]    
     AGRAVDIABE: Literal[
         "Ignorado",
         "Não",
-        "Sim"
+        "Sim",
+        None
     ]
     HIV: Literal[
         "Não realizado",
         "Negativo",
         "Positivo",
-        "Em andamento"
+        "Em andamento",
+        None
     ]
     POP_RUA: Literal[
         "Não",
@@ -44,26 +49,29 @@ class ExamDataDTO(BaseModel):
         "Sim"
     ]
     CS_SEXO: Literal[
-        "Masculino",
-        "Feminino",
-        "Ignorado"
+        "M",
+        "F",
+        "I"
     ]
     BACILOSC_E: Literal[
         "Positivo",
         "Negativo",
-        "Não realizado"
+        "Não realizado",
+        "Não se aplica"
     ]
     CULTURA_ES: Literal[
         "Positiva",
         "Negativa",
         "Em andamento",
-        "Não realizada"
+        "Não realizada",
+        None
     ]
     RAIOX_TORA: Literal[
         "Suspeito",
         "Normal",
         "Outra patologia",
-        "Não realizado"
+        "Não realizado",
+        None
     ]
     CS_RACA: Literal[
         "Branca",
@@ -71,7 +79,8 @@ class ExamDataDTO(BaseModel):
         "Amarela",
         "Parda",
         "Indígena",
-        "Ignorado"
+        "Ignorado",
+        None
     ]
     TRATAMENTO: Literal[
         "Caso novo",
@@ -84,17 +93,22 @@ class ExamDataDTO(BaseModel):
         "Positiva",
         "Negativa",
         "Em andamento",
-        "Não realizada"
+        "Não realizada",
+        None
     ]
     HISTOPATOL: Literal[
         "BAAR positivo",
         "Sugestivo TB",
         "Não sugestivo",
-        "Não realizado"
+        "Não realizado",
+        "Em andamento",
+        None
     ]
     TRATSUP_AT: Literal[
         "Sim",
-        "Não"
+        "Não",
+        "Ignorado",
+        None
     ]
     CS_ESCOL_N: Literal[
         "Analfabeto",
@@ -106,7 +120,8 @@ class ExamDataDTO(BaseModel):
         "Ensino médio completo",
         "Superior incompleto",
         "Superior completo",
-        "Ignorado"
+        "Ignorado",
+        "Não se aplica"
     ]
     SG_UF_NOT: Literal [
         "AC", "AL", "AP", "AM", "BA",

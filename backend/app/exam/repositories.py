@@ -1,4 +1,5 @@
 from typing import Any
+from datetime import datetime
 
 from ..patient.schemas import PatientDTO
 from .schemas import ExamDataDTO
@@ -11,27 +12,37 @@ class ExamRepository:
         self._db = {} # USING SIMPLE DICT AS STORAGE FOR NOW
         
     def save_exam_data(self, user:PatientDTO, exam_data: ExamDataDTO) -> None:
-        key = str((user.CPF, 'exam_data'))
-        value = exam_data
+        dt_now = datetime.now().isoformat(sep=' ')
+        key = str((user.CPF, 'exam_data', dt_now))
+        value = dict(exam_data)
+        value['DATA_HORA_EXAME'] = dt_now
         self._db[key] = value
         
-    def get_exam_data(self, user:PatientDTO) -> ExamDataDTO | None:
-        try:
-            key = str((user.CPF, 'exam_data'))
-            return self._db[key]
+    def get_exam_data(self, user:PatientDTO) -> list[dict] | list:
+        key = str((user.CPF, 'exam_data')).rstrip(')')
         
-        except KeyError:    
-            raise ResourceNotFoundError('Nenhum registro de exames encontrado para paciente informado')
+        valores = list(
+            v for k, v in self._db.items() 
+            if k.startswith(key)
+        )
+        
+        return valores
         
     def save_exam_results(self, user:PatientDTO, results: float) -> None:
-        key = str((user.CPF, 'exam_result'))
-        value = results
+        dt_now = datetime.now().isoformat(sep=' ')
+        key = str((user.CPF, 'exam_result', dt_now))
+        value = {
+            "RESULTADO": results, 
+            'DATA_HORA_EXAME': dt_now
+            }
         self._db[key] = value
         
-    def get_exam_results(self, user:PatientDTO) -> ExamDataDTO | None:
-        try:
-            key = str((user.CPF, 'exam_result'))
-            return self._db[key]
+    def get_exam_results(self, user:PatientDTO) -> list[dict] | list:
+        key = str((user.CPF, 'exam_result')).rstrip(')')
         
-        except KeyError:    
-            raise ResourceNotFoundError('Nenhum resultado de exame encontrado para paciente informado')
+        valores = list(
+            v for k, v in self._db.items() 
+            if k.startswith(key)
+        )
+        
+        return valores

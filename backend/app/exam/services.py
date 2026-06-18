@@ -34,20 +34,14 @@ class ExamService:
     def get_exam_data(self, data: dict):
         patient = PatientDTO.model_validate(data)
         exam_data = self.exam_repo.get_exam_data(patient)
-    
-        if exam_data is None:
-            raise ResourceNotFoundError("Exam data not found for specified patient")
         
-        return dict(exam_data)
+        return exam_data
     
     def get_results(self, data: dict):
         patient = PatientDTO.model_validate(data)
         result = self.exam_repo.get_exam_results(patient)
-         
-        if result is None:
-            raise ResourceNotFoundError("Exam results not found for specified patient")
         
-        return {'RESULTADO': result}
+        return result
          
 
     
