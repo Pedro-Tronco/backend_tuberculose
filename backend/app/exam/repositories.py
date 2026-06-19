@@ -1,8 +1,9 @@
 from typing import Any
 from datetime import datetime
 
-from ..patient.schemas import PatientDTO
 from .schemas import ExamDataDTO
+from ..patient.schemas import PatientDTO
+from ..model.schemas import ModelOutput
 
 from ..exceptions import ResourceNotFoundError
 
@@ -28,11 +29,12 @@ class ExamRepository:
         
         return valores
         
-    def save_exam_results(self, user:PatientDTO, results: float) -> None:
+    def save_exam_results(self, user:PatientDTO, results:ModelOutput ) -> None:
         dt_now = datetime.now().isoformat(sep=' ')
         key = str((user.CPF, 'exam_result', dt_now))
         value = {
-            "RESULTADO": results, 
+            "PROBABILIDADE": results.get('PROBABILIDADE'), 
+            "CLASSIFICACAO": results.get('CLASSIFICACAO'), 
             'DATA_HORA_EXAME': dt_now
             }
         self._db[key] = value

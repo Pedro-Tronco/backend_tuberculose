@@ -1,2 +1,8 @@
 __pycache__/
 *.log
+python_env/
+*.pyc
+Lib/
+Scripts/
+Include/
+pyvenv.cfg

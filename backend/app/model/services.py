@@ -1,16 +1,13 @@
 from unidecode import unidecode
 from typing import Any
-import joblib
 import cloudpickle
-import xgboost
-import numpy as np
 import pandas as pd
 from pathlib import Path
 
 from pydantic import BaseModel
 
 from .repositories import ModelRepository
-from .schemas import ModelMetadata
+from .schemas import ModelMetadata, ModelOutput
 
 from ..exam.schemas import ExamDataDTO
 
@@ -58,27 +55,36 @@ class ModelService:
         self._model_cache[key] = model
         return model
 
-    def predict_with_model(self, model_id: str | Path, data: ExamDataDTO) -> float:
-        return 100.0
+    def predict_with_model(self, model_id: str | Path, data: ExamDataDTO) -> ModelOutput:
+        # return 100.0 # fallback to test the rest of the backend
         model = self.load_artifact(model_id)
-        
-        reg_data = self.regularize_exam_data(data)
+        features = self.regularize_exam_data(data)
 
-        # if model implements sklearn-like API
         try:
-            features = np.array([list(reg_data)])
-            result = model.predict_proba(features) if hasattr(model, 'predict_proba') else model.predict(features)
-            # handle classifiers returning array
-            if hasattr(result, '__len__') and not isinstance(result, float):
-                # predict_proba -> take positive class prob if shape (n,2)
-                if result.ndim == 2 and result.shape[1] > 1:
-                    return float(result[0][1])
-                return float(result[0])
-            return float(result)
+            result = model.predict_proba(features)
+            
+            probability = float(result[0][1])
+            
+            if probability <= 0.25:
+                category = 'Muito improvável'
+            elif probability <= 0.5:
+                category = 'Improvável'
+            elif probability <= 0.75:
+                category = 'Provável'
+            else:
+                category = 'Muito provável'
+
+            output = ModelOutput(
+                CLASSIFICACAO=category,
+                PROBABILIDADE=round(probability, 2)
+            )
+            
+            return output
+            
         except Exception as exc:
             raise InternalServerError(f'Error running model prediction: {exc}')
 
-    def regularize_exam_data(self, exam_data: ExamDataDTO) -> pd.DataFrame:
+    def regularize_exam_data(self, exam_data: ExamDataDTO):
         # support Pydantic BaseModel and plain dict
         if isinstance(exam_data, BaseModel):
             data_items = exam_data.model_dump().items()
@@ -91,15 +97,9 @@ class ModelService:
             except Exception:
                 raise InternalServerError('Unsupported exam data format for regularization')
 
-        reg_df = pd.DataFrame([{
+        features = pd.DataFrame([{
             key: (unidecode(value).lower().replace(' ', '_') if isinstance(value, str) else value)
             for key, value in data_items
         }])
-        
-        # print(reg_df)
-        
-        # # ==preprocessor = joblib.load(r"C:\Users\Pedro Augusto\Documents\Atitus\projetos\5o_semestre\projeto_tuberculose\backend\models\Processador_Exec-1_3Camadas_2048Neur_AUC-0.8217_F1-0.8195.joblib")
 
-        # reg_data = preprocessor.transform(reg_df)
-
-        return reg_df
+        return features

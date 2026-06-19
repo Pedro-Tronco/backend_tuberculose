@@ -6,3 +6,7 @@ class ModelMetadata(TypedDict):
     name: str
     description: str
     path: str
+    
+class ModelOutput(TypedDict):
+    CLASSIFICACAO: str
+    PROBABILIDADE: float

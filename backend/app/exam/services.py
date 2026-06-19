@@ -6,6 +6,7 @@ from ..patient.services import PatientService
 
 from .schemas import ExamDataDTO, PatientExamPayload
 from ..patient.schemas import PatientDTO
+from ..model.schemas import ModelOutput
 
 from ..exceptions import ResourceNotFoundError
 
@@ -29,7 +30,7 @@ class ExamService:
         
         self.exam_repo.save_exam_results(patient, exam_results)
         
-        return {'PROBABILIDADE': exam_results}
+        return exam_results
     
     def get_exam_data(self, data: dict):
         patient = PatientDTO.model_validate(data)

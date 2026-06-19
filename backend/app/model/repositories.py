@@ -7,7 +7,7 @@ from .schemas import ModelMetadata
 
 class ModelRepository:
     def __init__(self, models_path: Path | str | None = None) -> None:
-        self.models_path = Path(models_path) if models_path else Path(__file__).resolve().parents[2] / "models"
+        self.models_path = Path(models_path) if models_path else Path(__file__).resolve().parents[3] / "models"
         if not self.models_path.exists() or not self.models_path.is_dir():
             raise FileNotFoundError(f"Models directory not found: {self.models_path}")
 

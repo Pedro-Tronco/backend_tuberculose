@@ -59,13 +59,6 @@ class ExamDataDTO(BaseModel):
         "Não realizado",
         "Não se aplica"
     ]
-    CULTURA_ES: Literal[
-        "Positiva",
-        "Negativa",
-        "Em andamento",
-        "Não realizada",
-        None
-    ]
     RAIOX_TORA: Literal[
         "Suspeito",
         "Normal",
@@ -88,27 +81,6 @@ class ExamDataDTO(BaseModel):
         "Reingresso após abandono",
         "Transferência",
         "Não sabe"
-    ]
-    CULTURA_OU: Literal[
-        "Positiva",
-        "Negativa",
-        "Em andamento",
-        "Não realizada",
-        None
-    ]
-    HISTOPATOL: Literal[
-        "BAAR positivo",
-        "Sugestivo TB",
-        "Não sugestivo",
-        "Não realizado",
-        "Em andamento",
-        None
-    ]
-    TRATSUP_AT: Literal[
-        "Sim",
-        "Não",
-        "Ignorado",
-        None
     ]
     CS_ESCOL_N: Literal[
         "Analfabeto",

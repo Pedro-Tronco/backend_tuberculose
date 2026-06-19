@@ -1,0 +1,5 @@
+{
+  "name": "Regressão Logística",
+  "description": "O modelo mais simples. Usa os pesos da regressão linear e coloca na função sigmoide para gerar a probabilidade do paciente abandonar o tratamento. O recall é a métrica em que o modelo melhor performou. Usa principalmente o estado de notificação, escolaridade e categoria da idade para fazer a predição.",
+  "preprocessing": null
+}
