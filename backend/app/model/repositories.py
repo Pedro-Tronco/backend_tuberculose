@@ -16,11 +16,12 @@ class ModelRepository:
         for folder in sorted(self.models_path.iterdir()):
             if not folder.is_dir():
                 continue
-            models.append(self._read_model_metadata(folder))
+            models.append(self.read_model_metadata(folder))
         return models
 
-    def _read_model_metadata(self, folder: Path) -> ModelMetadata:
+    def read_model_metadata(self, folder: Path) -> ModelMetadata:
         metadata_file = folder / "model.json"
+        
         model_path = str(folder.resolve())
 
         if metadata_file.exists() and metadata_file.is_file():
@@ -31,6 +32,7 @@ class ModelRepository:
                     "name": str(metadata.get("name", folder.name)),
                     "description": str(metadata.get("description", "")),
                     "path": model_path,
+                    "preprocessor": str(metadata.get('preprocessor')) or None
                 }
             except json.JSONDecodeError as exc:
                 raise ValueError(f"Invalid JSON in {metadata_file}: {exc}") from exc
@@ -40,6 +42,7 @@ class ModelRepository:
             "name": folder.name,
             "description": "",
             "path": model_path,
+            "preprocessor": None
         }
 
     def get_model_artifact(self, model_id: str) -> Path | None:

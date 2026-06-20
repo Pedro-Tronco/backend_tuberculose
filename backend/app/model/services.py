@@ -3,6 +3,7 @@ from typing import Any
 import cloudpickle
 import pandas as pd
 from pathlib import Path
+import keras
 
 from pydantic import BaseModel
 
@@ -28,7 +29,7 @@ class ModelService:
 
         return models
 
-    def load_artifact(self, model_id: str | Path) -> object:
+    def load_artifact(self, model_id: str | Path):
         key = str(model_id)
         if key in self._model_cache:
             return self._model_cache[key]
@@ -42,26 +43,37 @@ class ModelService:
         if artifact is None or not Path(artifact).exists():
             raise InternalServerError(f"Model artifact not found for '{model_id}'")
 
-        if artifact.suffix == ".joblib":
-            model = joblib.load(artifact)
+        prepro_file = self.model_repo.read_model_metadata(artifact.parent).get("preprocessor")
 
-        elif artifact.suffix == ".pkl" or artifact.suffix == ".pickle":
+        if prepro_file is None:
+            preprocessor = None
+        else:
+            prepro_artifact = Path(__file__).resolve().parents[3] / "preprocessing" / prepro_file
+            with open(prepro_artifact, 'rb') as f:
+                preprocessor = cloudpickle.load(f)
+
+        if artifact.suffix == ".pkl" or artifact.suffix == ".pickle":
             with open(artifact, "rb") as f:
                 model = cloudpickle.load(f)
+                
+        elif artifact.suffix == '.keras':
+            model = keras.models.load_model(artifact)
                 
         else:
             raise InternalServerError(f"Unsopported extension for model: {artifact.suffix}") 
                 
         self._model_cache[key] = model
-        return model
+        return model, preprocessor
 
-    def predict_with_model(self, model_id: str | Path, data: ExamDataDTO) -> ModelOutput:
+    def predict_with_model(self, model_artifact: str | Path, data: ExamDataDTO) -> ModelOutput:
         # return 100.0 # fallback to test the rest of the backend
-        model = self.load_artifact(model_id)
+        model, preprocesor = self.load_artifact(model_artifact)
         features = self.regularize_exam_data(data)
-
         try:
-            result = model.predict_proba(features)
+            if preprocesor is not None:
+                features = preprocesor.transform(features)
+                
+            result = model.predict_proba(features) if hasattr(model, 'predict_proba') else model.predict(features)
             
             probability = float(result[0][1])
             

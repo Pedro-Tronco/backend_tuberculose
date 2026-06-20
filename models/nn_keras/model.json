@@ -1,0 +1,5 @@
+{
+  "name": "Keras Neural Network",
+  "description": "Uma rede neural profunda. Tem um desempenho inferior aos outros modelos, mas é o mais interpretável. Usa principalmente o tipo de tratamento, se utiliza drogas, se mora na rua, se fuma e se tem HIV para fazer a predição.",
+  "preprocessor": "rede_neural_pipeline_preprocessing.pkl"
+}

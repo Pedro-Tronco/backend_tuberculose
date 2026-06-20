@@ -1,5 +1,6 @@
-from typing import Literal, Optional
+from typing import Literal, TypedDict
 from pydantic import BaseModel
+from datetime import datetime
 
 from ..patient.schemas import PatientDTO
 

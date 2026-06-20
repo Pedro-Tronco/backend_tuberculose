@@ -1,5 +1,5 @@
 {
   "name": "XGBoost",
   "description": "É o padrão ouro para dados tabulares. Combina várias árvores de decisão para criar um modelo mais forte. Uma árvore de decisão pode errar bastante, mas ao combinar várias, o resultado é bem superior. Tem um bom resultado em todas métricas. Usa principalmente o tipo de tratamento, se utiliza drogas, se mora na rua, se fuma e se tem HIV para fazer a predição.",
-  "preprocessing": null
+  "preprocessor": null
 }

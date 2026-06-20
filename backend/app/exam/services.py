@@ -17,7 +17,7 @@ class ExamService:
         self.model_service = model_service
         self.patient_service = patient_service
 
-    def generate_results(self, data: dict) -> dict[str, Any]:
+    def generate_results(self, data: dict) -> ModelOutput:
         payload = PatientExamPayload.model_validate(data)
         patient = payload.PACIENTE
         exam_data = payload.DADOS
@@ -32,13 +32,13 @@ class ExamService:
         
         return exam_results
     
-    def get_exam_data(self, data: dict):
+    def get_exam_data(self, data: dict) -> list[None]:
         patient = PatientDTO.model_validate(data)
         exam_data = self.exam_repo.get_exam_data(patient)
         
         return exam_data
     
-    def get_results(self, data: dict):
+    def get_results(self, data: dict) -> list[None]:
         patient = PatientDTO.model_validate(data)
         result = self.exam_repo.get_exam_results(patient)
         
