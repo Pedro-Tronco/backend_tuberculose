@@ -48,7 +48,7 @@ This repository contains a Flask-based backend for recording and retrieving pati
 - `GET /api/patient/all` — list all patients
 
 **Exam Management:**
-- `POST /api/exam/predict` — generate prediction for exam data
+- `POST /api/exam/predict` — generate prediction for exam data (requires patient data, exam features and model ID)
 - `GET /api/exam/history` — retrieve exam history for a patient
 - `GET /api/exam/results` — retrieve exam results for a patient
 

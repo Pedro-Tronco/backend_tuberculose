@@ -73,7 +73,10 @@ Generate a prediction for an exam using clinical data.
 - Content-Type: `application/json`
 - Body schema:
   - `PACIENTE`: object with patient information
+    - `NOME`: string
+    - `CPF`: integer
   - `DADOS`: object with exam attributes and clinical fields
+  - `MODELO`: string
 
 **Example request body:**
 
@@ -92,19 +95,16 @@ Generate a prediction for an exam using clinical data.
     "POP_RUA": "Não",
     "POP_LIBER": "Não",
     "POP_IMIG": "Não",
-    "CS_SEXO": "Masculino",
+    "CS_SEXO": "M",
     "BACILOSC_E": "Negativo",
-    "CULTURA_ES": "Não realizada",
     "RAIOX_TORA": "Normal",
     "CS_RACA": "Parda",
     "TRATAMENTO": "Caso novo",
-    "CULTURA_OU": "Não realizada",
-    "HISTOPATOL": "Não realizado",
-    "TRATSUP_AT": "Não",
     "CS_ESCOL_N": "Ensino médio completo",
     "SG_UF_NOT": "SP",
     "IDADE_ANOS": 35
-  }
+  },
+  "MODELO": "modelo-v1"
 }
 ```
 
@@ -113,7 +113,7 @@ Generate a prediction for an exam using clinical data.
 - Body: JSON object with prediction results
 
 **Notes:**
-- All fields under `DADOS` are required and must match accepted literal values.
+- Many fields under `DADOS` accept restricted literal values, and several may also be `null` if missing.
 - The request payload is validated using Pydantic schemas.
 
 ### GET /api/exam/history
